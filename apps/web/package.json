@@ -10,6 +10,7 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@bitwork/ui": "workspace:*",
     "@tailwindcss/postcss": "^4.1.18",
     "next": "^16.1.5",
     "postcss": "^8.5.6",
@@ -22,6 +23,6 @@
     "@types/node": "^25.2.2",
     "@types/react": "^19.2.13",
     "@types/react-dom": "^19.2.3",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }
