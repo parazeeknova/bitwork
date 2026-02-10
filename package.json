@@ -6,6 +6,7 @@
     "dev": "turbo run dev",
     "check-types": "turbo run check-types",
     "check": "ultracite fix --unsafe",
+    "env": "bun run scripts/setup-env.ts",
     "prepare": "lefthook install"
   },
   "devDependencies": {
