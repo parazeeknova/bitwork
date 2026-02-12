@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Instrument_Sans, Inter } from "next/font/google";
+import { Instrument_Sans, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const instrumentSans = Instrument_Sans({
@@ -12,9 +12,15 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
 export const metadata: Metadata = {
-  title: "Bitwork",
-  description: "Skill Exchange and Micro-Collaboration Network",
+  title: "Bitwork - Skill Exchange Network",
+  description:
+    "Connect with nearby service providers and workers. Exchange skills, build trust, get work done.",
 };
 
 export default function RootLayout({
@@ -25,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrumentSans.variable} ${inter.variable} font-sans antialiased`}
+        className={`${instrumentSans.variable} ${inter.variable} ${playfair.variable} font-sans antialiased`}
       >
         {children}
       </body>

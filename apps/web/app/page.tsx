@@ -1,9 +1,21 @@
-import { OnboardingModal } from "@/components/onboarding-modal";
+import { CTASection } from "@/components/landing/cta-section";
+import { FeaturesSection } from "@/components/landing/features-section";
+import { Footer } from "@/components/landing/footer";
+import { Header } from "@/components/landing/header";
+import { HeroSection } from "@/components/landing/hero-section";
+import { TestimonialsSection } from "@/components/landing/testimonials-section";
+import { WorkflowSection } from "@/components/landing/workflow-section";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
-      <OnboardingModal />
+    <main className="min-h-screen bg-background">
+      <Header />
+      <HeroSection />
+      <WorkflowSection />
+      <FeaturesSection />
+      <TestimonialsSection />
+      <CTASection />
+      <Footer />
     </main>
   );
 }
