@@ -1,10 +1,14 @@
+import { Mic } from "lucide-react";
+
 export function WorkflowSection() {
   const steps = [
     {
       number: "01",
       title: "Post a Task",
-      description: "Describe what you need - plumbing, tutoring, design, etc.",
+      description:
+        "Describe what you need - plumbing, tutoring, design, etc. Or just speak.",
       visual: "note",
+      hasAI: true,
     },
     {
       number: "02",
@@ -32,7 +36,7 @@ export function WorkflowSection() {
         <div className="mb-16 flex items-start justify-between">
           <div>
             <span className="font-mono text-muted-foreground text-xs tracking-wider">
-              TASK WORKFLOW
+              TASK WORKFLOW · AI ENHANCED
             </span>
             <h2 className="mt-4 max-w-md font-serif text-4xl leading-tight md:text-5xl">
               From task to done in four steps.
@@ -43,19 +47,26 @@ export function WorkflowSection() {
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
           {steps.map((step, index) => (
             <div className="relative" key={step.number}>
               <div className="h-full rounded-2xl border border-border bg-card p-6">
                 <div className="relative mb-6 flex aspect-square items-center justify-center overflow-hidden rounded-xl bg-secondary/50">
                   {step.visual === "note" && (
-                    <div className="-rotate-2 rounded border border-amber-100 bg-[#fffef0] p-4 shadow-sm">
-                      <p className="font-mono text-muted-foreground text-xs">
-                        TASK_POST
-                      </p>
-                      <p className="mt-1 font-serif text-sm italic">
-                        "Fix leaking tap - 30 mins"
-                      </p>
+                    <div className="relative">
+                      <div className="-rotate-2 rounded border border-amber-100 bg-[#fffef0] p-4 shadow-sm">
+                        <p className="font-mono text-muted-foreground text-xs">
+                          TASK_POST
+                        </p>
+                        <p className="mt-1 font-serif text-sm italic">
+                          "Fix leaking tap - 30 mins"
+                        </p>
+                      </div>
+                      {step.hasAI && (
+                        <div className="absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-card bg-accent shadow-sm">
+                          <Mic className="h-4 w-4 text-accent-foreground" />
+                        </div>
+                      )}
                     </div>
                   )}
                   {step.visual === "scan" && (

@@ -1,4 +1,4 @@
-import { Check, Lock, Users, Zap } from "lucide-react";
+import { Check, Lock, Mic, Users, Zap } from "lucide-react";
 
 export function FeaturesSection() {
   const geoItems = [
@@ -123,7 +123,7 @@ export function FeaturesSection() {
           </div>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="mb-6 grid gap-6 md:grid-cols-2">
           <div className="rounded-2xl border border-border bg-card p-6">
             <div className="flex gap-6">
               <div className="shrink-0 rounded-xl bg-secondary/50 p-4">
@@ -175,6 +175,117 @@ export function FeaturesSection() {
                       <span className="font-mono text-lg">{num}</span>
                     </div>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-2xl border border-border bg-card p-6">
+          <div className="mb-6 flex items-start justify-between">
+            <span className="font-mono text-muted-foreground text-xs">
+              AI_POWERED
+            </span>
+            <span className="font-mono text-muted-foreground text-xs">
+              VOICE_INTERFACE
+            </span>
+          </div>
+
+          <div className="mb-6 grid gap-6 md:grid-cols-2">
+            <div>
+              <h3 className="mb-3 font-semibold text-2xl">Voice Booking</h3>
+              <p className="mb-4 text-muted-foreground text-sm">
+                Just speak to book. Our AI handles speech-to-text and
+                text-to-speech to confirm agent workflows hands-free.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                <span className="rounded-full border border-border bg-secondary/50 px-3 py-1 font-mono text-[10px]">
+                  STT
+                </span>
+                <span className="rounded-full border border-border bg-secondary/50 px-3 py-1 font-mono text-[10px]">
+                  TTS
+                </span>
+                <span className="rounded-full border border-border bg-secondary/50 px-3 py-1 font-mono text-[10px]">
+                  MULTI_LANG
+                </span>
+                <span className="rounded-full border border-border bg-secondary/50 px-3 py-1 font-mono text-[10px]">
+                  HANDS_FREE
+                </span>
+              </div>
+              <div className="mt-4 grid grid-cols-2 gap-3">
+                <div className="rounded-lg border border-border bg-secondary/30 p-3">
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    SPEED
+                  </span>
+                  <p className="mt-1 font-mono text-lg">3x Faster</p>
+                </div>
+                <div className="rounded-lg border border-border bg-secondary/30 p-3">
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    LANGUAGES
+                  </span>
+                  <p className="mt-1 font-mono text-lg">12+</p>
+                </div>
+              </div>
+              <p className="mt-3 text-muted-foreground text-xs">
+                Perfect for workers on-the-go. No typing required — just speak
+                naturally and let AI handle the rest.
+              </p>
+            </div>
+
+            <div className="rounded-xl bg-secondary/50 p-4">
+              <div className="mb-3 flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent">
+                  <Mic className="h-4 w-4 text-accent-foreground" />
+                </div>
+                <span className="font-mono text-muted-foreground text-xs">
+                  VOICE_INPUT
+                </span>
+              </div>
+              <div className="mb-4 space-y-2 rounded-lg border border-border bg-card p-3">
+                <div className="flex items-center gap-2">
+                  <div className="h-1.5 w-1.5 rounded-full bg-green-500" />
+                  <p className="font-serif text-sm italic">
+                    "Book a plumber for tomorrow morning"
+                  </p>
+                </div>
+                <div className="flex gap-1">
+                  {[
+                    { height: 18, opacity: 0.7 },
+                    { height: 14, opacity: 0.5 },
+                    { height: 22, opacity: 0.9 },
+                    { height: 12, opacity: 0.4 },
+                    { height: 20, opacity: 0.8 },
+                    { height: 16, opacity: 0.6 },
+                    { height: 10, opacity: 0.35 },
+                    { height: 24, opacity: 0.95 },
+                    { height: 15, opacity: 0.55 },
+                    { height: 19, opacity: 0.75 },
+                    { height: 11, opacity: 0.45 },
+                    { height: 21, opacity: 0.85 },
+                  ].map((bar, i) => (
+                    <div
+                      className="w-0.5 rounded-full bg-accent"
+                      // biome-ignore lint/suspicious/noArrayIndexKey: static visualization
+                      key={i}
+                      style={{
+                        height: `${bar.height}px`,
+                        opacity: bar.opacity,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-between rounded-lg border border-border bg-card p-3">
+                <div>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    CONFIRMATION
+                  </span>
+                  <p className="font-mono text-xs">
+                    Plumber booked for 9:00 AM
+                  </p>
+                </div>
+                <div className="flex h-6 w-6 items-center justify-center rounded-full bg-accent/50">
+                  <Check className="h-3 w-3 text-accent-foreground" />
                 </div>
               </div>
             </div>
