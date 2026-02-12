@@ -1,7 +1,11 @@
+"use client";
+
 import { ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useOnboarding } from "@/components/onboarding-provider";
 
 export function HeroSection() {
+  const { openOnboarding } = useOnboarding();
+
   return (
     <section className="relative overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 pt-16 pb-24">
@@ -22,13 +26,14 @@ export function HeroSection() {
               skills, build trust, get work done.
             </p>
 
-            <Link
+            <button
               className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-              href="/app"
+              onClick={openOnboarding}
+              type="button"
             >
               Get Started
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </button>
           </div>
 
           <div className="relative">

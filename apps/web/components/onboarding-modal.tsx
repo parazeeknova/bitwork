@@ -17,8 +17,10 @@ import {
 import Image from "next/image";
 import { useState } from "react";
 import { AuthForm } from "./auth-form";
+import { useOnboarding } from "./onboarding-provider";
 
 export function OnboardingModal() {
+  const { closeOnboarding } = useOnboarding();
   const [activeTab, setActiveTab] = useState<"about" | "signup" | "complete">(
     "about"
   );
@@ -97,6 +99,7 @@ export function OnboardingModal() {
           <button
             aria-label="Close"
             className="text-gray-400 transition-colors hover:text-gray-600"
+            onClick={closeOnboarding}
             type="button"
           >
             <XIcon className="h-5 w-5" />

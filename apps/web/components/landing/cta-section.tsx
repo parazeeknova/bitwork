@@ -1,7 +1,11 @@
+"use client";
+
 import { ArrowRight, FileText, Mail, Send, Users, Zap } from "lucide-react";
-import Link from "next/link";
+import { useOnboarding } from "@/components/onboarding-provider";
 
 export function CTASection() {
+  const { openOnboarding } = useOnboarding();
+
   return (
     <section className="bg-secondary/30 py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -35,13 +39,14 @@ export function CTASection() {
               Join thousands of informal workers, students, and communities
               building fair, local skill exchanges.
             </p>
-            <Link
+            <button
               className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-colors hover:bg-primary/90"
-              href="/app"
+              onClick={openOnboarding}
+              type="button"
             >
               Join Bitwork
               <ArrowRight className="h-4 w-4" />
-            </Link>
+            </button>
           </div>
         </div>
       </div>
