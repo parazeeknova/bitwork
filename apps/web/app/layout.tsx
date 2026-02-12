@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   title: "Bitwork - Skill Exchange Network",
   description:
     "Connect with nearby service providers and workers. Exchange skills, build trust, get work done.",
+  icons: {
+    icon: "/bitwork.svg",
+  },
 };
 
 export default function RootLayout({
