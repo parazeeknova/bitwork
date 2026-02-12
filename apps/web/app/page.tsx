@@ -7,23 +7,34 @@ import { Header } from "@/components/landing/header";
 import { HeroSection } from "@/components/landing/hero-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { WorkflowSection } from "@/components/landing/workflow-section";
-import { OnboardingProvider } from "@/components/onboarding-provider";
+import {
+  OnboardingProvider,
+  useOnboarding,
+} from "@/components/onboarding-provider";
 import { SmoothScroll } from "@/components/smooth-scroll";
+
+function PageContent() {
+  const { isOpen } = useOnboarding();
+
+  return (
+    <SmoothScroll paused={isOpen}>
+      <main className="min-h-screen bg-background">
+        <Header />
+        <HeroSection />
+        <WorkflowSection />
+        <FeaturesSection />
+        <TestimonialsSection />
+        <CTASection />
+        <Footer />
+      </main>
+    </SmoothScroll>
+  );
+}
 
 export default function Home() {
   return (
     <OnboardingProvider>
-      <SmoothScroll>
-        <main className="min-h-screen bg-background">
-          <Header />
-          <HeroSection />
-          <WorkflowSection />
-          <FeaturesSection />
-          <TestimonialsSection />
-          <CTASection />
-          <Footer />
-        </main>
-      </SmoothScroll>
+      <PageContent />
     </OnboardingProvider>
   );
 }

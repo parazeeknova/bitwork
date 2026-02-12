@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans, Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@bitwork/ui/components/sonner";
 
 const instrumentSans = Instrument_Sans({
   subsets: ["latin"],
@@ -37,6 +38,7 @@ export default function RootLayout({
         className={`${instrumentSans.variable} ${inter.variable} ${playfair.variable} font-sans antialiased`}
       >
         {children}
+        <Toaster closeButton position="top-center" richColors />
       </body>
     </html>
   );

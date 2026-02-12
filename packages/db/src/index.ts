@@ -1,9 +1,8 @@
 import { SQL } from "bun";
 import { drizzle } from "drizzle-orm/bun-sql";
 import { env } from "./env";
-import { posts } from "./schema";
-
-const schema = { posts };
+// biome-ignore lint/performance/noNamespaceImport: Drizzle requires wildcard import for schema
+import * as schema from "./schema";
 
 const globalForDb = globalThis as unknown as {
   client: SQL | undefined;
@@ -19,3 +18,5 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 export const db = drizzle(client, { schema });
+// biome-ignore lint/performance/noBarrelFile: This is the package entry point
+export * from "./schema";
