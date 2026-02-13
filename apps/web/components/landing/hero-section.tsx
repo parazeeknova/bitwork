@@ -2,9 +2,19 @@
 
 import { ArrowRight, MapPin, Star } from "lucide-react";
 import { useOnboarding } from "@/components/onboarding-provider";
+import { useAuth } from "@/lib/auth/auth-provider";
 
 export function HeroSection() {
-  const { openOnboarding } = useOnboarding();
+  const { openOnboarding, openOnboardingAtTab } = useOnboarding();
+  const { user } = useAuth();
+
+  const handleGetStarted = () => {
+    if (user) {
+      openOnboardingAtTab("complete");
+    } else {
+      openOnboarding();
+    }
+  };
 
   return (
     <section className="relative overflow-hidden">
@@ -12,10 +22,6 @@ export function HeroSection() {
         <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-2">
           <div className="animate-[fadeInUp_0.8s_ease-out_both] space-y-6">
             <div className="inline-flex items-center gap-2 rounded-full border border-border px-3 py-1 font-mono text-muted-foreground text-xs">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-              </span>
               <span>Skill Exchange Network</span>
             </div>
 
@@ -32,7 +38,7 @@ export function HeroSection() {
 
             <button
               className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground text-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:translate-y-0"
-              onClick={openOnboarding}
+              onClick={handleGetStarted}
               type="button"
             >
               Get Started
@@ -105,7 +111,7 @@ export function HeroSection() {
               <div className="absolute top-32 -right-2 animate-[float_6s_ease-in-out_1s_infinite] space-y-2">
                 <div className="max-w-44 rounded-xl border border-border bg-card p-3 shadow-md transition-transform duration-300 hover:scale-105">
                   <div className="mb-2 flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary/30 to-accent" />
+                    <div className="h-6 w-6 rounded-full bg-linear-to-br from-primary/30 to-accent" />
                     <span className="font-medium text-xs">Ramesh P.</span>
                     <span className="rounded-full bg-green-100 px-1.5 py-0.5 font-medium text-[8px] text-green-700">
                       Verified
@@ -189,7 +195,7 @@ export function HeroSection() {
               <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 <div className="rounded-xl border border-border bg-card p-3 shadow-sm">
                   <div className="mb-2 flex items-center gap-2">
-                    <div className="h-6 w-6 rounded-full bg-gradient-to-br from-primary/30 to-accent" />
+                    <div className="h-6 w-6 rounded-full bg-linear-to-br from-primary/30 to-accent" />
                     <span className="font-medium text-xs">Ramesh P.</span>
                     <span className="rounded-full bg-green-100 px-1.5 py-0.5 font-medium text-[8px] text-green-700">
                       Verified

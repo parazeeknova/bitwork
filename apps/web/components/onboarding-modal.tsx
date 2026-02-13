@@ -43,7 +43,7 @@ export function OnboardingModal({ initialTab }: OnboardingModalProps) {
   return (
     <Dialog onOpenChange={(open) => !open && closeOnboarding()} open={true}>
       <DialogContent
-        className="flex h-[90vh] max-h-[780px] w-[95vw] max-w-5xl flex-col gap-0 overflow-hidden rounded-xl bg-background p-0 sm:max-w-5xl sm:rounded-2xl"
+        className="flex h-[90vh] max-h-195 w-[95vw] max-w-5xl flex-col gap-0 overflow-hidden rounded-xl bg-background p-0 sm:max-w-5xl sm:rounded-2xl"
         showCloseButton={false}
       >
         <DialogTitle className="sr-only">Onboarding</DialogTitle>
@@ -73,8 +73,9 @@ export function OnboardingModal({ initialTab }: OnboardingModalProps) {
               />
             </button>
             <button
-              className="group flex flex-col outline-none"
-              onClick={() => setActiveTab("signup")}
+              className={`group flex flex-col outline-none ${user ? "cursor-not-allowed opacity-50" : ""}`}
+              disabled={!!user}
+              onClick={() => !user && setActiveTab("signup")}
               type="button"
             >
               <span
@@ -211,9 +212,9 @@ export function OnboardingModal({ initialTab }: OnboardingModalProps) {
                   <div className="space-y-2 pt-1 sm:pt-2">
                     <Button
                       className="h-11 w-full rounded-full bg-primary font-medium text-primary-foreground text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 sm:h-12 sm:text-base"
-                      onClick={() => setActiveTab("signup")}
+                      onClick={() => setActiveTab(user ? "complete" : "signup")}
                     >
-                      Join the Network
+                      {user ? "Continue" : "Join the Network"}
                     </Button>
                     <Button
                       className="h-9 w-full rounded-full font-medium text-muted-foreground text-sm hover:bg-secondary sm:h-10"
