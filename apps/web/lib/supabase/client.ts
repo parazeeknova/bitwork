@@ -1,12 +1,9 @@
 import { createBrowserClient } from "@supabase/ssr";
+import { env } from "@/lib/env";
 
 export function createClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!(supabaseUrl && supabaseKey)) {
-    throw new Error("Supabase URL and Key must be defined");
-  }
-
-  return createBrowserClient(supabaseUrl, supabaseKey);
+  return createBrowserClient(
+    env.NEXT_PUBLIC_SUPABASE_URL,
+    env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+  );
 }
