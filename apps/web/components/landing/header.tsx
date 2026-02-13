@@ -1,14 +1,57 @@
 "use client";
 
-import { Menu, X } from "lucide-react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@bitwork/ui/components/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@bitwork/ui/components/dropdown-menu";
+import { Briefcase, LogOut, Menu, Settings, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useOnboarding } from "@/components/onboarding-provider";
+import { useAuth } from "@/lib/auth/auth-provider";
 
 export function Header() {
   const { openOnboarding } = useOnboarding();
+  const { user, signOut } = useAuth();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const getUserInitials = () => {
+    if (!user) {
+      return "?";
+    }
+    const fullName = user.user_metadata?.full_name as string | undefined;
+    if (fullName) {
+      return fullName
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase()
+        .slice(0, 2);
+    }
+    const email = user.email;
+    if (email) {
+      const firstChar = email.charAt(0);
+      if (firstChar) {
+        return firstChar.toUpperCase();
+      }
+    }
+    return "?";
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
 
   return (
     <header className="sticky top-0 z-50 animate-[fadeInDown_0.5s_ease-out_both] border-border/40 border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
@@ -51,13 +94,44 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <button
-            className="rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:translate-y-0"
-            onClick={openOnboarding}
-            type="button"
-          >
-            Join Now
-          </button>
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-2 rounded-full outline-none focus:ring-2 focus:ring-primary/20">
+                <Avatar className="h-8 w-8">
+                  <AvatarImage
+                    alt={user.user_metadata?.full_name ?? "User"}
+                    src={user.user_metadata?.avatar_url}
+                  />
+                  <AvatarFallback className="bg-primary font-medium text-primary-foreground text-xs">
+                    {getUserInitials()}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48">
+                <DropdownMenuItem onClick={() => router.push("/home")}>
+                  <Briefcase className="mr-2 h-4 w-4" />
+                  My Jobs
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/settings")}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                  <LogOut className="mr-2 h-4 w-4" />
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <button
+              className="rounded-full bg-primary px-4 py-2 font-medium text-primary-foreground text-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 active:translate-y-0"
+              onClick={openOnboarding}
+              type="button"
+            >
+              Join Now
+            </button>
+          )}
 
           {/* Mobile menu toggle */}
           <button

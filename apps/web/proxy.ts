@@ -2,6 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
 import { env } from "@/lib/env";
 
+const PROTECTED_ROUTES = ["/home", "/post-job", "/apply-job"];
+
 export default async function proxy(request: NextRequest) {
   const response = NextResponse.next({
     request: {
@@ -27,7 +29,19 @@ export default async function proxy(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const isProtectedRoute = PROTECTED_ROUTES.some((route) =>
+    request.nextUrl.pathname.startsWith(route)
+  );
+
+  if (isProtectedRoute && !user) {
+    const redirectUrl = new URL("/", request.url);
+    redirectUrl.searchParams.set("auth", "required");
+    return NextResponse.redirect(redirectUrl);
+  }
 
   return response;
 }

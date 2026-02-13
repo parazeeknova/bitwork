@@ -7,13 +7,10 @@ import { Header } from "@/components/landing/header";
 import { HeroSection } from "@/components/landing/hero-section";
 import { TestimonialsSection } from "@/components/landing/testimonials-section";
 import { WorkflowSection } from "@/components/landing/workflow-section";
-import {
-  OnboardingProvider,
-  useOnboarding,
-} from "@/components/onboarding-provider";
+import { useOnboarding } from "@/components/onboarding-provider";
 import { SmoothScroll } from "@/components/smooth-scroll";
 
-function PageContent() {
+export default function Home() {
   const { isOpen } = useOnboarding();
 
   return (
@@ -28,13 +25,5 @@ function PageContent() {
         <Footer />
       </main>
     </SmoothScroll>
-  );
-}
-
-export default function Home() {
-  return (
-    <OnboardingProvider>
-      <PageContent />
-    </OnboardingProvider>
   );
 }

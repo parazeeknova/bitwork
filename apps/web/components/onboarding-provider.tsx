@@ -1,11 +1,21 @@
 "use client";
 
-import { createContext, type ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { OnboardingModal } from "./onboarding-modal";
+
+export type OnboardingTab = "about" | "signup" | "complete";
 
 interface OnboardingContextType {
   isOpen: boolean;
+  initialTab: OnboardingTab;
   openOnboarding: () => void;
+  openOnboardingAtTab: (tab: OnboardingTab) => void;
   closeOnboarding: () => void;
 }
 
@@ -21,16 +31,48 @@ export function useOnboarding() {
 
 export function OnboardingProvider({ children }: { children: ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [initialTab, setInitialTab] = useState<OnboardingTab>("about");
 
-  const openOnboarding = () => setIsOpen(true);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const onboarding = params.get("onboarding");
+    const auth = params.get("auth");
+
+    if (onboarding === "complete") {
+      setInitialTab("complete");
+      setIsOpen(true);
+      window.history.replaceState({}, "", window.location.pathname);
+    } else if (auth === "required") {
+      setInitialTab("signup");
+      setIsOpen(true);
+      window.history.replaceState({}, "", window.location.pathname);
+    }
+  }, []);
+
+  const openOnboarding = () => {
+    setInitialTab("about");
+    setIsOpen(true);
+  };
+
+  const openOnboardingAtTab = (tab: OnboardingTab) => {
+    setInitialTab(tab);
+    setIsOpen(true);
+  };
+
   const closeOnboarding = () => setIsOpen(false);
 
   return (
     <OnboardingContext.Provider
-      value={{ isOpen, openOnboarding, closeOnboarding }}
+      value={{
+        isOpen,
+        initialTab,
+        openOnboarding,
+        openOnboardingAtTab,
+        closeOnboarding,
+      }}
     >
       {children}
-      {isOpen && <OnboardingModal />}
+      {isOpen && <OnboardingModal initialTab={initialTab} />}
     </OnboardingContext.Provider>
   );
 }

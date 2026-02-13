@@ -15,18 +15,33 @@ import {
   XIcon,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/lib/auth/auth-provider";
 import { AuthForm } from "./auth-form";
-import { useOnboarding } from "./onboarding-provider";
+import { type OnboardingTab, useOnboarding } from "./onboarding-provider";
 
-export function OnboardingModal() {
-  const { isOpen, closeOnboarding } = useOnboarding();
-  const [activeTab, setActiveTab] = useState<"about" | "signup" | "complete">(
-    "about"
-  );
+interface OnboardingModalProps {
+  initialTab: OnboardingTab;
+}
+
+export function OnboardingModal({ initialTab }: OnboardingModalProps) {
+  const { closeOnboarding } = useOnboarding();
+  const { user } = useAuth();
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<OnboardingTab>(initialTab);
+
+  useEffect(() => {
+    setActiveTab(initialTab);
+  }, [initialTab]);
+
+  const handleComplete = () => {
+    closeOnboarding();
+    router.push("/home");
+  };
 
   return (
-    <Dialog onOpenChange={(open) => !open && closeOnboarding()} open={isOpen}>
+    <Dialog onOpenChange={(open) => !open && closeOnboarding()} open={true}>
       <DialogContent
         className="flex h-[90vh] max-h-[780px] w-[95vw] max-w-5xl flex-col gap-0 overflow-hidden rounded-xl bg-background p-0 sm:max-w-5xl sm:rounded-2xl"
         showCloseButton={false}
@@ -80,8 +95,9 @@ export function OnboardingModal() {
               />
             </button>
             <button
-              className="group flex flex-col outline-none"
-              onClick={() => setActiveTab("complete")}
+              className={`group flex flex-col outline-none ${user ? "" : "cursor-not-allowed opacity-50"}`}
+              disabled={!user}
+              onClick={() => user && setActiveTab("complete")}
               type="button"
             >
               <span
@@ -265,7 +281,10 @@ export function OnboardingModal() {
                   ))}
                 </div>
 
-                <Button className="h-11 w-full animate-[fadeInUp_0.5s_ease-out_0.7s_both] rounded-full bg-primary font-medium text-primary-foreground text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 sm:h-12 sm:text-base">
+                <Button
+                  className="h-11 w-full animate-[fadeInUp_0.5s_ease-out_0.7s_both] rounded-full bg-primary font-medium text-primary-foreground text-sm transition-all duration-300 hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20 sm:h-12 sm:text-base"
+                  onClick={handleComplete}
+                >
                   Continue
                 </Button>
               </div>
