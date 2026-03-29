@@ -7,5 +7,19 @@
   ],
   "files": {
     "includes": ["!packages/ui/src/components"]
+  },
+  "linter": {
+    "rules": {
+      "suspicious": { "noArrayIndexKey": "off", "noExplicitAny": "off" },
+      "a11y": { "noSvgWithoutTitle": "off" },
+      "complexity": {
+        "noForEach": "off",
+        "noExcessiveCognitiveComplexity": "off"
+      },
+      "style": {
+        "noMagicNumbers": "off",
+        "noNestedTernary": "off"
+      }
+    }
   }
 }

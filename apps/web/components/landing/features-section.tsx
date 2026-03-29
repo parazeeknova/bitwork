@@ -228,7 +228,6 @@ export function FeaturesSection() {
                     {["1", "0", "0", "%"].map((num, i) => (
                       <div
                         className="flex h-10 w-8 items-center justify-center rounded border border-border bg-card transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-sm"
-                        // biome-ignore lint/suspicious/noArrayIndexKey: static visualization
                         key={i}
                         style={{ transitionDelay: `${i * 50}ms` }}
                       >
@@ -332,7 +331,6 @@ export function FeaturesSection() {
                     ].map((bar, i) => (
                       <div
                         className="w-0.5 animate-[soundWave_1.5s_ease-in-out_infinite] rounded-full bg-accent"
-                        // biome-ignore lint/suspicious/noArrayIndexKey: static visualization
                         key={i}
                         style={{
                           height: `${bar.height}px`,
