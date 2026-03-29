@@ -3,15 +3,20 @@
 import {
   Award,
   Bell,
+  Briefcase,
+  CalendarClock,
   CheckCircle2,
   ChevronRight,
   CircleDot,
   Clock,
   Filter,
+  LayoutGrid,
+  List,
   MapPin,
   MessageSquare,
   Sparkles,
   TrendingUp,
+  Users,
   Zap,
 } from "lucide-react";
 import Image from "next/image";
@@ -19,9 +24,145 @@ import Link from "next/link";
 import { useState } from "react";
 import { CATEGORIES, JOBS } from "@/lib/data/mock-jobs";
 
+function JobCardItem({
+  job,
+  viewMode,
+}: {
+  job: (typeof JOBS)[0];
+  viewMode: "grid" | "list";
+}) {
+  return (
+    <Link
+      className={`group relative flex flex-col overflow-hidden rounded-lg border border-[#2D4A3E]/15 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#2D4A3E]/60 hover:shadow-[0_8px_24px_rgba(45,74,62,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D4A3E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F1EB] ${
+        viewMode === "list" ? "sm:flex-row" : ""
+      }`}
+      href={`/jobs/${job.id}`}
+    >
+      <div
+        className={`relative w-full shrink-0 overflow-hidden ${
+          viewMode === "list" ? "h-48 sm:h-auto sm:w-48" : "h-48"
+        }`}
+      >
+        <Image
+          alt={job.title}
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          src={job.image}
+        />
+        <div className="absolute inset-0 bg-linear-to-t from-[#2D4A3E]/80 via-[#2D4A3E]/20 to-transparent opacity-80" />
+
+        <div className="absolute top-3 left-3 flex flex-col gap-1.5">
+          {job.tags.map((tag) => (
+            <span
+              className="inline-flex w-fit items-center gap-1 rounded-sm bg-white/90 px-2 py-0.5 font-bold font-mono text-[#2D4A3E] text-[10px] tracking-wider shadow-sm backdrop-blur-md"
+              key={tag}
+            >
+              <Zap className="h-3 w-3 fill-[#2D4A3E]" />
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
+          <span className="font-medium font-mono text-white/90 text-xs shadow-sm">
+            {job.id}
+          </span>
+          <span
+            className={`inline-flex items-center rounded-sm px-2.5 py-0.5 font-medium text-xs tracking-wide shadow-sm backdrop-blur-md ${
+              job.status === "Open" ? "bg-[#2D4A3E] text-white" : ""
+            } ${
+              job.status === "In Progress" ? "bg-amber-500/90 text-white" : ""
+            } ${job.status === "Filled" ? "bg-white/90 text-[#414240]" : ""}`}
+          >
+            {job.status === "Open" && job.pulse && (
+              <span className="relative mr-1.5 flex h-1.5 w-1.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
+              </span>
+            )}
+            {job.status}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-1 flex-col p-5">
+        <div className="flex-1">
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="relative h-6 w-6 overflow-hidden rounded-full border border-[#2D4A3E]/20">
+                <Image
+                  alt={job.requester.name}
+                  className="object-cover"
+                  fill
+                  sizes="24px"
+                  src={`https://i.pravatar.cc/150?u=${job.id}`}
+                />
+              </div>
+              <span className="font-medium text-[#414240] text-xs">
+                {job.requester.name}
+              </span>
+              {job.requester.verified && (
+                <CheckCircle2 className="h-3.5 w-3.5 text-[#2D4A3E]" />
+              )}
+            </div>
+            <div className="flex items-center gap-1 font-mono text-[#414240]/60 text-[10px] tracking-wide">
+              <MapPin className="h-3 w-3" />
+              <span className="max-w-20 truncate">{job.location}</span>
+            </div>
+          </div>
+
+          <h2 className="line-clamp-2 font-medium font-serif text-[#414240] text-[1.1rem] leading-snug transition-colors group-hover:text-[#2D4A3E]">
+            {job.title}
+          </h2>
+
+          {viewMode === "list" && (
+            <p className="mt-2 line-clamp-2 text-[#414240]/70 text-sm leading-relaxed">
+              {job.description}
+            </p>
+          )}
+
+          <div className="mt-3 flex flex-wrap items-center gap-2 text-[#414240]/70 text-xs">
+            <span className="inline-flex rounded-sm border border-[#2D4A3E]/10 bg-[#2D4A3E]/5 px-2 py-0.5 font-medium text-[#2D4A3E]">
+              {job.category}
+            </span>
+            <span className="text-[#414240]/30">•</span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3 text-[#2D4A3E]/60" />
+              {job.duration}
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-4 flex items-center justify-between border-[#2D4A3E]/10 border-t pt-4">
+          <div className="flex flex-col">
+            <span className="font-mono text-[#414240]/50 text-[10px] uppercase tracking-widest">
+              {job.compensation.type}
+            </span>
+            <span className="mt-0.5 font-serif text-[#414240] text-lg leading-none">
+              {job.compensation.value}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 rounded-sm bg-[#F1F1EB] px-2.5 py-1.5 font-medium text-[#414240]/70 text-xs">
+            {job.status === "Open" && job.providersNearby > 0
+              ? `${job.providersNearby} replies`
+              : ""}
+            {job.status === "Open" && job.providersNearby === 0
+              ? "Be first"
+              : ""}
+            {job.status === "Open" ? "" : "Closed"}
+            <ChevronRight className="h-3.5 w-3.5 text-[#2D4A3E] transition-transform group-hover:translate-x-0.5" />
+          </div>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 export default function JobsDashboard() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [viewMode, _setViewMode] = useState<"grid" | "list">("grid");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
 
   return (
     <div className="flex flex-col gap-6 lg:gap-8">
@@ -83,56 +224,100 @@ export default function JobsDashboard() {
           <div className="relative flex flex-col justify-center overflow-hidden border-white/5 border-t bg-[#1f352c]/50 p-6 backdrop-blur-sm sm:p-8 lg:col-span-5 lg:border-t-0 lg:border-l xl:col-span-4">
             <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-transparent to-black/20" />
 
-            <div className="relative z-10 mb-8 flex items-center justify-between">
-              <h3 className="flex items-center gap-2 font-bold font-mono text-[10px] text-white/40 uppercase tracking-widest">
-                <Zap className="h-3 w-3" />
-                System Terminal
-              </h3>
-              <span className="flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-400">
-                <CircleDot className="h-2 w-2 animate-pulse fill-emerald-400" />
-                Online
-              </span>
-            </div>
-
-            <div className="relative z-10 flex flex-col gap-6 font-mono text-white/80 text-xs">
-              <div className="flex flex-col gap-1.5 border-white/5 border-b pb-5">
-                <span className="text-[9px] text-white/40 uppercase tracking-widest">
-                  Active Providers
-                </span>
-                <span className="font-serif text-3xl text-white tracking-tight">
-                  842{" "}
-                  <span className="ml-1 font-mono text-white/40 text-xs uppercase tracking-normal">
-                    Nearby
-                  </span>
-                </span>
+            <div className="relative z-10 flex flex-col gap-8">
+              <div className="flex flex-col gap-4">
+                <h3 className="flex items-center gap-2 font-medium font-mono text-white/60 text-xs uppercase tracking-[0.15em]">
+                  <TrendingUp className="h-4 w-4 text-[#c5d4c0]" />
+                  Network Activity
+                </h3>
+                <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-center gap-2 font-serif text-3xl text-white">
+                      <Briefcase className="h-5 w-5 text-[#c5d4c0]/70" />
+                      142
+                    </span>
+                    <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider">
+                      Open Tasks
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <span className="flex items-center gap-2 font-serif text-3xl text-white">
+                      <CalendarClock className="h-5 w-5 text-[#c5d4c0]/70" />
+                      38
+                      <span className="inline-flex items-center rounded-sm bg-emerald-500/20 px-1.5 py-0.5 font-mono text-[10px] text-emerald-300">
+                        +12%
+                      </span>
+                    </span>
+                    <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider">
+                      Posted Today
+                    </span>
+                  </div>
+                  <div className="col-span-2 flex flex-col gap-1 border-white/10 border-t pt-4">
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2 font-serif text-white text-xl">
+                        <Users className="h-5 w-5 text-[#c5d4c0]/70" />
+                        842
+                      </span>
+                      <span className="flex items-center gap-1.5 rounded-sm bg-white/10 px-2 py-1 font-mono text-[#c5d4c0] text-[10px] uppercase tracking-wider">
+                        <CircleDot className="h-2 w-2" /> Live
+                      </span>
+                    </div>
+                    <span className="font-mono text-[10px] text-white/50 uppercase tracking-wider">
+                      Active providers in your radius
+                    </span>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-col gap-1.5 border-white/5 border-b pb-5">
-                <span className="text-[9px] text-white/40 uppercase tracking-widest">
-                  Avg Match Time
-                </span>
-                <span className="font-serif text-3xl text-[#c5d4c0] tracking-tight">
-                  1.2{" "}
-                  <span className="ml-1 font-mono text-white/40 text-xs uppercase tracking-normal">
-                    Minutes
-                  </span>
-                </span>
-              </div>
-
-              <div className="flex flex-col gap-3 pt-2">
-                <span className="text-[9px] text-white/40 uppercase tracking-widest">
-                  Live Activity Feed
-                </span>
-                <div className="flex flex-col gap-2.5 text-[11px] opacity-70">
-                  <p className="truncate text-white/60">
-                    &gt; Matching BW-4421 with 3 plumbers...
-                  </p>
-                  <p className="truncate text-white/60">
-                    &gt; New provider [Electrician] verified.
-                  </p>
-                  <p className="animate-pulse truncate text-[#c5d4c0]">
-                    &gt; Ready for input_
-                  </p>
+              <div className="flex flex-col gap-4 border-white/10 border-t pt-6">
+                <h3 className="flex items-center gap-2 font-medium font-mono text-white/60 text-xs uppercase tracking-[0.15em]">
+                  <Award className="h-4 w-4 text-[#c5d4c0]" />
+                  Top Neighbors
+                </h3>
+                <div className="flex flex-col gap-4">
+                  {[
+                    {
+                      name: "Srinivas K.",
+                      tasks: 12,
+                      role: "Electrician",
+                      img: "11",
+                    },
+                    { name: "Lakshmi M.", tasks: 9, role: "Tutor", img: "44" },
+                    { name: "Rahul D.", tasks: 7, role: "Plumber", img: "33" },
+                  ].map((user) => (
+                    <div
+                      className="group flex cursor-pointer items-center justify-between"
+                      key={user.name}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-white/10 transition-colors group-hover:border-[#c5d4c0]">
+                          <Image
+                            alt={user.name}
+                            className="object-cover"
+                            fill
+                            sizes="40px"
+                            src={`https://i.pravatar.cc/150?img=${user.img}`}
+                          />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-sm text-white/90 transition-colors group-hover:text-white">
+                            {user.name}
+                          </span>
+                          <span className="text-white/50 text-xs">
+                            {user.role}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="font-serif text-[#c5d4c0] text-lg leading-none">
+                          {user.tasks}
+                        </span>
+                        <span className="mt-1 font-mono text-[9px] text-white/40 uppercase tracking-wider">
+                          Tasks
+                        </span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -164,6 +349,41 @@ export default function JobsDashboard() {
             </button>
           ))}
         </div>
+
+        <div className="flex items-center gap-3 border-[#2D4A3E]/10 pl-4 sm:border-l">
+          <div className="flex items-center rounded-md border border-[#2D4A3E]/15 bg-white p-0.5 shadow-sm">
+            <button
+              className={`rounded px-2 py-1 transition-colors ${
+                viewMode === "grid"
+                  ? "bg-[#2D4A3E]/5 text-[#2D4A3E]"
+                  : "text-[#414240]/60 hover:text-[#2D4A3E]"
+              }`}
+              onClick={() => setViewMode("grid")}
+              type="button"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </button>
+            <button
+              className={`rounded px-2 py-1 transition-colors ${
+                viewMode === "list"
+                  ? "bg-[#2D4A3E]/5 text-[#2D4A3E]"
+                  : "text-[#414240]/60 hover:text-[#2D4A3E]"
+              }`}
+              onClick={() => setViewMode("list")}
+              type="button"
+            >
+              <List className="h-4 w-4" />
+            </button>
+          </div>
+          <select
+            className="rounded-md border border-[#2D4A3E]/15 bg-white px-3 py-1.5 font-medium text-[#414240] text-xs shadow-sm focus:border-[#2D4A3E]/30 focus:outline-none focus:ring-0"
+            defaultValue="latest"
+          >
+            <option value="latest">Latest First</option>
+            <option value="closest">Nearest to Me</option>
+            <option value="budget-high">Highest Budget</option>
+          </select>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
@@ -174,140 +394,7 @@ export default function JobsDashboard() {
             }`}
           >
             {JOBS.map((job) => (
-              <Link
-                className={`group relative flex flex-col overflow-hidden rounded-lg border border-[#2D4A3E]/15 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all hover:-translate-y-0.5 hover:border-[#2D4A3E]/60 hover:shadow-[0_8px_24px_rgba(45,74,62,0.08)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D4A3E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F1F1EB] ${
-                  viewMode === "list" ? "sm:flex-row" : ""
-                }`}
-                href={`/jobs/${job.id}`}
-                key={job.id}
-              >
-                <div
-                  className={`relative w-full shrink-0 overflow-hidden ${
-                    viewMode === "list" ? "h-48 sm:h-auto sm:w-48" : "h-48"
-                  }`}
-                >
-                  <Image
-                    alt={job.title}
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    src={job.image}
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#2D4A3E]/80 via-[#2D4A3E]/20 to-transparent opacity-80" />
-
-                  <div className="absolute top-3 left-3 flex flex-col gap-1.5">
-                    {job.tags.map((tag) => (
-                      <span
-                        className="inline-flex w-fit items-center gap-1 rounded-sm bg-white/90 px-2 py-0.5 font-bold font-mono text-[#2D4A3E] text-[10px] tracking-wider shadow-sm backdrop-blur-md"
-                        key={tag}
-                      >
-                        <Zap className="h-3 w-3 fill-[#2D4A3E]" />
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="absolute right-3 bottom-3 left-3 flex items-end justify-between">
-                    <span className="font-medium font-mono text-white/90 text-xs shadow-sm">
-                      {job.id}
-                    </span>
-                    <span
-                      className={`inline-flex items-center rounded-sm px-2.5 py-0.5 font-medium text-xs tracking-wide shadow-sm backdrop-blur-md ${
-                        job.status === "Open" ? "bg-[#2D4A3E] text-white" : ""
-                      } ${
-                        job.status === "In Progress"
-                          ? "bg-amber-500/90 text-white"
-                          : ""
-                      } ${
-                        job.status === "Filled"
-                          ? "bg-white/90 text-[#414240]"
-                          : ""
-                      }`}
-                    >
-                      {job.status === "Open" && job.pulse && (
-                        <span className="relative mr-1.5 flex h-1.5 w-1.5">
-                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
-                          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-white" />
-                        </span>
-                      )}
-                      {job.status}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col p-5">
-                  <div className="flex-1">
-                    <div className="mb-3 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div className="relative h-6 w-6 overflow-hidden rounded-full border border-[#2D4A3E]/20">
-                          <Image
-                            alt={job.requester.name}
-                            className="object-cover"
-                            fill
-                            sizes="24px"
-                            src={`https://i.pravatar.cc/150?u=${job.id}`}
-                          />
-                        </div>
-                        <span className="font-medium text-[#414240] text-xs">
-                          {job.requester.name}
-                        </span>
-                        {job.requester.verified && (
-                          <CheckCircle2 className="h-3.5 w-3.5 text-[#2D4A3E]" />
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1 font-mono text-[#414240]/60 text-[10px] tracking-wide">
-                        <MapPin className="h-3 w-3" />
-                        <span className="max-w-20 truncate">
-                          {job.location}
-                        </span>
-                      </div>
-                    </div>
-
-                    <h2 className="line-clamp-2 font-medium font-serif text-[#414240] text-[1.1rem] leading-snug transition-colors group-hover:text-[#2D4A3E]">
-                      {job.title}
-                    </h2>
-
-                    {viewMode === "list" && (
-                      <p className="mt-2 line-clamp-2 text-[#414240]/70 text-sm leading-relaxed">
-                        {job.description}
-                      </p>
-                    )}
-
-                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[#414240]/70 text-xs">
-                      <span className="inline-flex rounded-sm border border-[#2D4A3E]/10 bg-[#2D4A3E]/5 px-2 py-0.5 font-medium text-[#2D4A3E]">
-                        {job.category}
-                      </span>
-                      <span className="text-[#414240]/30">•</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3 text-[#2D4A3E]/60" />
-                        {job.duration}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex items-center justify-between border-[#2D4A3E]/10 border-t pt-4">
-                    <div className="flex flex-col">
-                      <span className="font-mono text-[#414240]/50 text-[10px] uppercase tracking-widest">
-                        {job.compensation.type}
-                      </span>
-                      <span className="mt-0.5 font-serif text-[#414240] text-lg leading-none">
-                        {job.compensation.value}
-                      </span>
-                    </div>
-
-                    <div className="flex items-center gap-2 rounded-sm bg-[#F1F1EB] px-2.5 py-1.5 font-medium text-[#414240]/70 text-xs">
-                      {job.status === "Open" && job.providersNearby > 0
-                        ? `${job.providersNearby} replies`
-                        : ""}
-                      {job.status === "Open" && job.providersNearby === 0
-                        ? "Be first"
-                        : ""}
-                      {job.status === "Open" ? "" : "Closed"}
-                      <ChevronRight className="h-3.5 w-3.5 text-[#2D4A3E] transition-transform group-hover:translate-x-0.5" />
-                    </div>
-                  </div>
-                </div>
-              </Link>
+              <JobCardItem job={job} key={job.id} viewMode={viewMode} />
             ))}
           </div>
 
@@ -361,95 +448,6 @@ export default function JobsDashboard() {
             <div className="mt-4 flex items-center justify-between border-[#2D4A3E]/10 border-t pt-3 font-mono text-[#414240]/50 text-[10px] uppercase tracking-widest">
               <span>Bitwork Admin</span>
               <span>Updated Today</span>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-[#2D4A3E]/15 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-            <h3 className="mb-4 flex items-center gap-2 font-medium font-mono text-[#414240]/60 text-xs uppercase tracking-[0.15em]">
-              <TrendingUp className="h-4 w-4 text-[#2D4A3E]" />
-              Network Activity
-            </h3>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-6">
-              <div className="flex flex-col gap-1">
-                <span className="font-serif text-3xl text-[#2D4A3E]">142</span>
-                <span className="font-mono text-[#414240]/70 text-[10px] uppercase tracking-wider">
-                  Open Tasks
-                </span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="flex items-center gap-2 font-serif text-3xl text-[#2D4A3E]">
-                  38
-                  <span className="inline-flex items-center rounded-sm bg-emerald-100 px-1.5 py-0.5 font-mono text-[10px] text-emerald-800">
-                    +12%
-                  </span>
-                </span>
-                <span className="font-mono text-[#414240]/70 text-[10px] uppercase tracking-wider">
-                  Posted Today
-                </span>
-              </div>
-              <div className="col-span-2 flex flex-col gap-1 border-[#2D4A3E]/10 border-t pt-4">
-                <div className="flex items-center justify-between">
-                  <span className="font-serif text-[#414240] text-xl">842</span>
-                  <span className="flex items-center gap-1.5 rounded-sm bg-[#2D4A3E]/10 px-2 py-1 font-mono text-[#2D4A3E] text-[10px] uppercase tracking-wider">
-                    <CircleDot className="h-2 w-2" /> Live
-                  </span>
-                </div>
-                <span className="font-mono text-[#414240]/70 text-[10px] uppercase tracking-wider">
-                  Active providers in your radius
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-lg border border-[#2D4A3E]/15 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
-            <h3 className="mb-4 flex items-center gap-2 font-medium font-mono text-[#414240]/60 text-xs uppercase tracking-[0.15em]">
-              <Award className="h-4 w-4 text-[#2D4A3E]" />
-              Top Neighbors
-            </h3>
-            <div className="flex flex-col gap-4">
-              {[
-                {
-                  name: "Srinivas K.",
-                  tasks: 12,
-                  role: "Electrician",
-                  img: "11",
-                },
-                { name: "Lakshmi M.", tasks: 9, role: "Tutor", img: "44" },
-                { name: "Rahul D.", tasks: 7, role: "Plumber", img: "33" },
-              ].map((user) => (
-                <div
-                  className="group flex cursor-pointer items-center justify-between"
-                  key={user.name}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-[#2D4A3E]/10 transition-colors group-hover:border-[#2D4A3E]">
-                      <Image
-                        alt={user.name}
-                        className="object-cover"
-                        fill
-                        sizes="40px"
-                        src={`https://i.pravatar.cc/150?img=${user.img}`}
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="font-medium text-[#414240] text-sm transition-colors group-hover:text-[#2D4A3E]">
-                        {user.name}
-                      </span>
-                      <span className="text-[#414240]/60 text-xs">
-                        {user.role}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    <span className="font-serif text-[#2D4A3E] text-lg leading-none">
-                      {user.tasks}
-                    </span>
-                    <span className="mt-1 font-mono text-[#414240]/50 text-[9px] uppercase tracking-wider">
-                      Tasks
-                    </span>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
 
