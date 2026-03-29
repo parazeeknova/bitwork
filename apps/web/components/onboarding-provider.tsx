@@ -12,11 +12,11 @@ import { OnboardingModal } from "./onboarding-modal";
 export type OnboardingTab = "about" | "signup" | "complete";
 
 interface OnboardingContextType {
-  isOpen: boolean;
+  closeOnboarding: () => void;
   initialTab: OnboardingTab;
+  isOpen: boolean;
   openOnboarding: () => void;
   openOnboardingAtTab: (tab: OnboardingTab) => void;
-  closeOnboarding: () => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | null>(null);

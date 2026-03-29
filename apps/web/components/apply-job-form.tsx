@@ -18,17 +18,17 @@ import {
 import { useState } from "react";
 
 interface ApplicationFormData {
+  agreedToTerms: boolean;
+  availability: string;
+  experience: string;
   fullName: string;
   phone: string;
-  experience: string;
-  availability: string;
-  agreedToTerms: boolean;
 }
 
 interface ApplyJobFormProps {
   jobTitle?: string;
-  onSubmit?: (data: ApplicationFormData) => void;
   onClose?: () => void;
+  onSubmit?: (data: ApplicationFormData) => void;
 }
 
 const STAGES = [

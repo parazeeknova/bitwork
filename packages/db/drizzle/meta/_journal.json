@@ -15,6 +15,13 @@
       "when": 1770877870915,
       "tag": "0001_mature_pixie",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1774757541962,
+      "tag": "0002_vengeful_nextwave",
+      "breakpoints": true
     }
   ]
 }

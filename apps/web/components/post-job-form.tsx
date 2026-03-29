@@ -33,35 +33,35 @@ interface State {
 }
 
 interface StatesResponse {
-  error: boolean;
-  msg: string;
   data: {
     name: string;
     iso3: string;
     states: State[];
   };
+  error: boolean;
+  msg: string;
 }
 
 interface CitiesResponse {
+  data: string[];
   error: boolean;
   msg: string;
-  data: string[];
 }
 
 interface FormData {
-  userType: string;
-  state: string;
   city: string;
-  title: string;
-  hourlyRate: string;
   description: string;
-  hasTimeline: boolean;
   duration: string;
+  hasTimeline: boolean;
+  hourlyRate: string;
+  state: string;
+  title: string;
+  userType: string;
 }
 
 interface PostJobFormProps {
-  onSubmit?: (data: FormData) => void;
   onClose?: () => void;
+  onSubmit?: (data: FormData) => void;
 }
 
 const STAGES = [

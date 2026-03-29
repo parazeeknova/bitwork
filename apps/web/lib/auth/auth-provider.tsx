@@ -11,9 +11,9 @@ import {
 import { createClient } from "@/lib/supabase/client";
 
 interface AuthContextType {
-  user: User | null;
   isLoading: boolean;
   signOut: () => Promise<void>;
+  user: User | null;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);

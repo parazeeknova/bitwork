@@ -5,13 +5,13 @@ import type React from "react";
 import { useState } from "react";
 
 interface JobProps {
-  title: string;
-  requesterName: string;
   avatarUrl: string;
-  description: string;
   budget: string;
-  location: string;
+  description: string;
   isClosed?: boolean;
+  location: string;
+  requesterName: string;
+  title: string;
 }
 
 const JobCard: React.FC<JobProps> = ({
