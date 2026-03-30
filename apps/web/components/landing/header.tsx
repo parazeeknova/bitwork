@@ -81,15 +81,9 @@ export function Header() {
           </Link>
           <Link
             className="font-mono text-muted-foreground text-xs uppercase tracking-wider transition-colors hover:text-foreground"
-            href="#workflow"
+            href="/jobs"
           >
-            How It Works
-          </Link>
-          <Link
-            className="font-mono text-muted-foreground text-xs uppercase tracking-wider transition-colors hover:text-foreground"
-            href="#testimonials"
-          >
-            Stories
+            Jobs
           </Link>
         </nav>
 
@@ -165,17 +159,10 @@ export function Header() {
           </Link>
           <Link
             className="rounded-lg px-3 py-2 font-mono text-muted-foreground text-xs uppercase tracking-wider transition-colors hover:bg-secondary hover:text-foreground"
-            href="#workflow"
+            href="/jobs"
             onClick={() => setMobileMenuOpen(false)}
           >
-            How It Works
-          </Link>
-          <Link
-            className="rounded-lg px-3 py-2 font-mono text-muted-foreground text-xs uppercase tracking-wider transition-colors hover:bg-secondary hover:text-foreground"
-            href="#testimonials"
-            onClick={() => setMobileMenuOpen(false)}
-          >
-            Stories
+            Jobs
           </Link>
         </nav>
       </div>
