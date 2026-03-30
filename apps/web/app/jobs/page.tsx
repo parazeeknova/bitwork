@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AudioLines,
   Award,
   Bell,
   Briefcase,
@@ -10,10 +11,12 @@ import {
   CircleDot,
   Clock,
   Filter,
+  Flame,
   LayoutGrid,
   List,
   MapPin,
   MessageSquare,
+  Mic,
   Sparkles,
   TrendingUp,
   Users,
@@ -325,7 +328,7 @@ export default function JobsDashboard() {
         </div>
       </div>
 
-      <div className="sticky top-18.25 z-40 -mx-4 flex flex-col gap-4 border-[#2D4A3E]/10 border-b bg-[#F1F1EB]/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:flex-row sm:items-center sm:px-6 lg:-mx-8 lg:px-8">
+      <div className="sticky top-15.25 z-40 -mx-4 flex flex-col gap-4 border-[#2D4A3E]/10 border-b bg-[#F1F1EB]/95 px-4 py-3 backdrop-blur-md sm:-mx-6 sm:flex-row sm:items-center sm:px-6 lg:-mx-8 lg:px-8">
         <div className="flex items-center gap-2 border-[#2D4A3E]/10 pr-4 sm:border-r">
           <Filter className="h-4 w-4 text-[#2D4A3E]" />
           <span className="font-mono text-[#414240]/60 text-xs uppercase tracking-wider">
@@ -408,7 +411,7 @@ export default function JobsDashboard() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-6 lg:sticky lg:top-22 lg:col-span-4">
+        <div className="flex flex-col gap-6 lg:sticky lg:top-36 lg:col-span-4">
           <div className="relative overflow-hidden rounded-lg bg-[#2D4A3E] p-6 text-white shadow-lg">
             <div
               className="absolute inset-0 opacity-10"
@@ -451,36 +454,121 @@ export default function JobsDashboard() {
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#2D4A3E]/10 bg-[#F1F1EB] p-5">
-            <h3 className="mb-4 font-medium font-mono text-[#414240]/60 text-xs uppercase tracking-[0.15em]">
-              Trending Demand
-            </h3>
-            <ul className="flex flex-col gap-3.5">
+          <div className="rounded-lg border border-[#2D4A3E]/15 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            <div className="mb-5 flex items-center justify-between">
+              <h3 className="flex items-center gap-2 font-medium font-mono text-[#414240]/60 text-xs uppercase tracking-[0.15em]">
+                <TrendingUp className="h-4 w-4 text-[#2D4A3E]" />
+                Trending Demand
+              </h3>
+              <span className="flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 font-medium text-[10px] text-orange-700">
+                <Flame className="h-3 w-3" />
+                Hot
+              </span>
+            </div>
+            <div className="flex flex-col gap-4">
               {[
-                { name: "Plumbing Repair", percent: 85 },
-                { name: "Electrical Fitting", percent: 70 },
-                { name: "Carpentry", percent: 65 },
-                { name: "Math Tutoring", percent: 45 },
-                { name: "Tailoring", percent: 30 },
-              ].map((skill) => (
-                <li className="flex flex-col gap-1.5" key={skill.name}>
-                  <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-[#414240]">
-                      {skill.name}
-                    </span>
-                    <span className="font-mono text-[#414240]/60 text-[10px]">
-                      {skill.percent}%
-                    </span>
+                {
+                  name: "Plumbing Repair",
+                  percent: 85,
+                  trend: "+14%",
+                  color: "bg-orange-500",
+                },
+                {
+                  name: "Electrical Fitting",
+                  percent: 70,
+                  trend: "+8%",
+                  color: "bg-[#2D4A3E]",
+                },
+                {
+                  name: "Carpentry",
+                  percent: 65,
+                  trend: "+5%",
+                  color: "bg-[#2D4A3E]/80",
+                },
+                {
+                  name: "Math Tutoring",
+                  percent: 45,
+                  trend: "-2%",
+                  color: "bg-[#2D4A3E]/60",
+                },
+                {
+                  name: "Tailoring",
+                  percent: 30,
+                  trend: "+1%",
+                  color: "bg-[#2D4A3E]/40",
+                },
+              ].map((skill, index) => (
+                <div
+                  className="group relative flex flex-col gap-2"
+                  key={skill.name}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-sm bg-[#F1F1EB] font-mono text-[#414240]/60 text-[10px] transition-colors group-hover:bg-[#2D4A3E]/10 group-hover:text-[#2D4A3E]">
+                        {index + 1}
+                      </span>
+                      <span className="font-medium text-[#414240] text-sm transition-colors group-hover:text-[#2D4A3E]">
+                        {skill.name}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span
+                        className={`font-mono text-[10px] ${skill.trend.startsWith("+") ? "text-emerald-600" : "text-rose-500"}`}
+                      >
+                        {skill.trend}
+                      </span>
+                      <span className="font-medium font-mono text-[#2D4A3E] text-xs">
+                        {skill.percent}%
+                      </span>
+                    </div>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#2D4A3E]/10">
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-[#F1F1EB]">
                     <div
-                      className="h-full rounded-full bg-[#2D4A3E] transition-all duration-1000"
+                      className={`h-full rounded-full ${skill.color} transition-all duration-1000 ease-out`}
                       style={{ width: `${skill.percent}%` }}
                     />
                   </div>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
+          </div>
+
+          {/* Voice Assistant (TTS/SST) Card */}
+          <div className="relative overflow-hidden rounded-lg border border-[#2D4A3E]/15 bg-white p-5 shadow-[0_1px_3px_rgba(0,0,0,0.04)]">
+            {/* Background decoration */}
+            <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-[#2D4A3E]/5 blur-2xl" />
+
+            <div className="relative z-10 mb-3 flex items-center justify-between">
+              <h3 className="flex items-center gap-2 font-medium font-mono text-[#414240]/60 text-xs uppercase tracking-[0.15em]">
+                <Mic className="h-4 w-4 text-[#2D4A3E]" />
+                Voice AI (TTS/SST)
+              </h3>
+              <span className="flex animate-pulse items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 font-bold font-mono text-[9px] text-emerald-800 uppercase tracking-wider">
+                Beta
+              </span>
+            </div>
+
+            <div className="relative z-10">
+              <p className="mb-4 text-[#414240]/80 text-sm leading-relaxed">
+                Skip the typing. Use our new{" "}
+                <strong className="font-medium text-[#2D4A3E]">
+                  Speech-to-Text
+                </strong>{" "}
+                to speak your task, or let{" "}
+                <strong className="font-medium text-[#2D4A3E]">
+                  Text-to-Speech
+                </strong>{" "}
+                read offers aloud.
+              </p>
+
+              <button
+                className="group flex w-full items-center justify-center gap-2 rounded-md border border-[#2D4A3E]/20 bg-[#F1F1EB] px-4 py-2.5 font-medium text-[#2D4A3E] text-sm transition-all hover:bg-[#2D4A3E] hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2D4A3E] focus-visible:ring-offset-2"
+                type="button"
+              >
+                <AudioLines className="h-4 w-4 transition-transform group-hover:scale-110" />
+                Activate Voice Mode
+              </button>
+            </div>
           </div>
         </div>
       </div>
