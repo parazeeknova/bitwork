@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { JOB_DETAIL as JOB } from "@/lib/data/mock-jobs";
+import { JOB_DETAILS } from "@/lib/data/mock-jobs";
 
 export default async function JobDetail({
   params,
@@ -27,8 +27,12 @@ export default async function JobDetail({
 }) {
   const resolvedParams = await params;
   const id = resolvedParams.id;
-  // Overwrite the hardcoded ID with the actual URL param just for realism
-  const currentJob = { ...JOB, id };
+
+  // Try to find the specific job, or fallback to the first one if ID isn't mocked
+  const jobData =
+    JOB_DETAILS[id as keyof typeof JOB_DETAILS] ||
+    Object.values(JOB_DETAILS)[0];
+  const currentJob = { ...jobData, id };
 
   return (
     <div className="flex flex-col gap-6 lg:gap-8">
